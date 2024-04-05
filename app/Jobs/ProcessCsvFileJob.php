@@ -18,7 +18,7 @@ class ProcessCsvFileJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     public function __construct(public $file)
     {
-        //
+        
     }
     public function handle()
     {
@@ -29,7 +29,6 @@ class ProcessCsvFileJob implements ShouldQueue
             ->getRows()
             ->chunk(1000)
             ->each(function ( $rowProperties) {
-
                 foreach ($rowProperties as $row) {
                     $product = Product::updateOrCreate(['sku' => $row['sku']], [
                         'name' => $row['name'],

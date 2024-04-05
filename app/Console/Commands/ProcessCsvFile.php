@@ -9,14 +9,10 @@ use App\Jobs\ProcessCsvFileJob;
 
 class ProcessCsvFile extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+
     protected $signature = 'csv:upload {file}';
     protected $description = 'Upload and process a CSV file';
-    
+
     public function handle()
     {
         $file = $this->argument('file');
