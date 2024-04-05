@@ -14,7 +14,7 @@ insert/update data into a database, and provide a secure API endpoint for retrie
 
 	composer install
 
-	composer require league/csv:^9.0
+	composer require spatie/simple-excel
 
 
 3. Copy the `.env.example` file to `.env`:
