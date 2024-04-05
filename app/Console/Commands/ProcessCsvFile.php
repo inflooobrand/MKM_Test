@@ -15,15 +15,12 @@ class ProcessCsvFile extends Command
      * @var string
      */
     protected $signature = 'csv:upload {file}';
-
-
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Upload and process a CSV file';
-
     /**
      * Execute the console command.
      */
@@ -35,11 +32,8 @@ class ProcessCsvFile extends Command
             $this->error('File does not exist.');
             return 1;
         }
-
         ProcessCsvFileJob::dispatch($file);
-        
         $this->info('CSV file processed successfully.');
-
         return 0;
     }
 }
