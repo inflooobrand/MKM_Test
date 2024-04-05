@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use League\Csv\Reader;
 use Illuminate\Support\Facades\Storage;
+use Spatie\SimpleExcel\SimpleExcelReader;
 
 class ProcessCsvFileJob implements ShouldQueue
 {
@@ -22,34 +23,21 @@ class ProcessCsvFileJob implements ShouldQueue
     public function handle()
     {
 
-        $file = $this->file;
-        DB::transaction(function () use($file) {
-            $contents = Storage::disk('local')->get($file);
-            if ($contents !== false) {
-                $chunkSize = 1000;                
-                $chunks = array_chunk($contents, $chunkSize);
-                foreach (array_chunk($chunks, $chunkSize) as $chunk) {
-                    $this->processChunk($chunk);
-                    if ($this->attempts() % $chunkSize === 0) {
-                        $this->release();
-                    }
+        SimpleExcelReader::create(Storage::disk('local')->path($this->file), "csv")
+            ->useDelimiter(',')
+            ->useHeaders(['sku','name','description','brand'])
+            ->getRows()
+            ->chunk(1000)
+            ->each(function ( $rowProperties) {
+
+                foreach ($rowProperties as $row) {
+                    $product = Product::updateOrCreate(['sku' => $row['sku']], [
+                        'name' => $row['name'],
+                        'description' => $row['description'],
+                        'brand' => $row['brand'],
+                    ]);
                 }
-            }   
-        });
+            });
     }
 
-    protected function processChunk(array $chunk)
-    {
-        $csv = Reader::createFromString($chunk);
-        $csv->setHeaderOffset(0);
-        foreach ($csv as $row) {
-            $product = Product::updateOrCreate(['sku' => $row['sku']], [
-                'name' => $row['name'],
-                'description' => $row['description'],
-                'brand' => $row['brand'],
-            ]);
-
-            // info($row);
-        }
-    }
 }

@@ -17,7 +17,7 @@ class LoginTest extends TestCase
   public function testUserCanLoginWithValidCredentials()
     {
         $response = $this->postJson('/api/login', [
-            'email' => 'epacocha@example.com',
+            'email' => 'estel.halvorson@example.com',
             'password' => 'Test@123',
         ]);
         $response->assertStatus(200);

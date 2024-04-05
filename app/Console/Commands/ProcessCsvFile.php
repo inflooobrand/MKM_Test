@@ -15,19 +15,11 @@ class ProcessCsvFile extends Command
      * @var string
      */
     protected $signature = 'csv:upload {file}';
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Upload and process a CSV file';
-    /**
-     * Execute the console command.
-     */
+    
     public function handle()
     {
         $file = $this->argument('file');
-
         if (!Storage::disk('local')->exists($file)) {
             $this->error('File does not exist.');
             return 1;
