@@ -1,4 +1,4 @@
-# Laravel 10 Application
+<!-- # Laravel 10 Application
 
 ## Introduction
 
@@ -71,3 +71,4 @@ insert/update data into a database, and provide a secure API endpoint for retrie
 To run the PHPUnit tests, use the following command:
 
 php artisan test
+ -->
